@@ -23,11 +23,11 @@ a:hover {
 }
 
 body {
+  background-color: #f8f9fa; /* Un gris muy claro de Bootstrap */
+  /* O si queres algo más elegante tipo papel */
+  /* background-color: #f4f1ea; */
   margin: 0;
-  display: flex;
-  place-items: center;
-  min-width: 320px;
-  min-height: 100vh;
+  font-family: 'Roboto', sans-serif;
 }
 
 h1 {
