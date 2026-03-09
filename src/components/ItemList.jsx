@@ -1,14 +1,19 @@
 import { Link } from "react-router-dom";
 
-const ItemList = ({ items }) => {
+const ItemList = ({ productos }) => {
   return (
     <div style={styles.container}>
-      {items.map((prod) => (
+      {productos.map((prod) => (
         <div key={prod.id} style={styles.card}>
-          <img src={prod.img} alt={prod.name} style={styles.img} />
-          <h3>{prod.name}</h3>
-          <p>${prod.price}</p>
-          <Link to={`/item/${prod.id}`} style={styles.btn}>Ver detalle</Link>
+          <img src={prod.img} alt={prod.nombre} style={styles.img} />
+          <h3>{prod.nombre}</h3>
+          <p>${prod.precio}</p>
+      <Link 
+  to={`/item/${prod.id}`} 
+  className="btn btn-danger btn-hover"
+>
+  Ver detalleF
+</Link>
         </div>
       ))}
     </div>

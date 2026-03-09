@@ -1,35 +1,33 @@
 import { useState, useEffect } from "react";
-import { useParams } from "react-router-dom"; 
-import { getProducts } from "../data/products"; 
+import { db } from "../firebase/config"; // Asegurá que la ruta sea correcta
+import { collection, getDocs } from "firebase/firestore";
 import ItemList from "./ItemList";
 
 const ItemListContainer = () => {
-  const [products, setProducts] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const { categoryId } = useParams(); 
+    const [productos, setProductos] = useState([]);
 
-  useEffect(() => {
-    setLoading(true);
-    
-    getProducts(categoryId)
-      .then((data) => {
-        setProducts(data);
-      })
-      .finally(() => {
-        setLoading(false);
-      });
-  }, [categoryId]); 
+    useEffect(() => {
+        // 1. Apuntamos a la colección 'productos' que acabás de crear
+        const productosRef = collection(db, "productos");
 
-  if (loading) return <h2>Cargando catálogo... 🍷</h2>;
+        // 2. Pedimos los documentos
+        getDocs(productosRef)
+            .then((resp) => {
+                // 3. Transformamos la respuesta en un array que React entienda
+                setProductos(
+                    resp.docs.map((doc) => {
+                        return { ...doc.data(), id: doc.id };
+                    })
+                );
+            })
+        
+    }, []);
 
-  return (
-    <div style={{ padding: "20px" }}>
-      <h1 style={{ textAlign: "center", textTransform: "capitalize" }}>
-        {categoryId ? categoryId : "Nuestros Productos"}
-      </h1>
-      <ItemList items={products} />
-    </div>
-  );
+    return (
+        <div>
+            {/* Aquí va tu componente ItemList pasándole los productos */}
+            <ItemList productos={productos} />
+        </div>
+    );
 };
-
 export default ItemListContainer;

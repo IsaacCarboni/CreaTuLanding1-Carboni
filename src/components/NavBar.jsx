@@ -1,12 +1,15 @@
 import { Link } from "react-router-dom";
 
+
 function NavBar() {
   return (
     
     <nav style={styles.nav}>
       {}
       <div style={styles.overlay}>
-        <h2 style={styles.title}>Bodega de Isa 🍷</h2>
+        <Link to="/" style={{ textDecoration: "none" }}>
+  <h2 style={styles.title}>Bodega de Isa 🍷</h2>
+</Link>
 
         <div style={styles.links}>
           <Link to="/" style={styles.linkText}>Inicio</Link>

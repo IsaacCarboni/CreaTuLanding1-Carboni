@@ -23,9 +23,7 @@ a:hover {
 }
 
 body {
-  background-color: #f8f9fa; /* Un gris muy claro de Bootstrap */
-  /* O si queres algo más elegante tipo papel */
-  /* background-color: #f4f1ea; */
+  background-color: #f8f9fa;
   margin: 0;
   font-family: 'Roboto', sans-serif;
 }
@@ -65,4 +63,19 @@ button:focus-visible {
   button {
     background-color: #f9f9f9;
   }
+   a:hover {
+    color: #747bff;
+  }
+  button {
+    background-color: #f9f9f9;
+  }
+}
+.btn-hover {
+  transition: all 0.3s ease !important;
+}
+
+.btn-hover:hover {
+  transform: scale(1.05);
+  opacity: 0.9;
+  border-color: transparent;
 }

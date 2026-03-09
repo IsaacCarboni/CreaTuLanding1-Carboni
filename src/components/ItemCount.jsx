@@ -18,18 +18,28 @@ const ItemCount = ({ stock, initial, onAdd }) => {
   return (
     <div style={{ marginTop: "20px" }}>
       <div style={{ display: "flex", alignItems: "center", gap: "10px", marginBottom: "10px" }}>
-        <button onClick={decrement} style={styles.button}>-</button>
+        <button 
+  onClick={decrement} 
+  className="btn btn-secondary btn-hover"
+>
+  -
+</button>
         <span style={styles.count}>{count}</span>
-        <button onClick={increment} style={styles.button}>+</button>
+        <button 
+  onClick={increment} 
+  className="btn btn-secondary btn-hover"
+>
+  +
+</button>
       </div>
       
       {}
-      <button 
-        onClick={() => onAdd(count)} 
-        style={styles.addBtn}
-      >
-        Agregar al carrito
-      </button>
+     <button 
+  onClick={() => onAdd(count)} 
+  className="btn btn-danger btn-hover w-100"
+>
+  Agregar al carrito
+</button>
     </div>
   );
 };
