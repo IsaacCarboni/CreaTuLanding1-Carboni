@@ -1,40 +1,59 @@
-import ItemCount from "./ItemCount";
-import { useContext } from "react";
-import { CartContext } from "../context/CartContext";
+    import { useState, useContext } from 'react';
+    import { CartContext } from '../context/CartContext';
+    import ItemCount from './ItemCount';
+    import { Link } from 'react-router-dom';
+    import Swal from 'sweetalert2';
 
-const ItemDetail = ({ item }) => {
-
-  const { addItem } = useContext(CartContext);
-
-  const handleOnAdd = (cantidad) => {
-    addItem(item, cantidad);
-
+    const ItemDetail = ({ item }) => {
     
-    alert(`✅ Agregaste ${cantidad} ${item.nombre} al carrito`);
-  };
+        if (!item) {
+            return <div className="text-center mt-5"><h3>Cargando los detalles de tu bodega...</h3></div>;
+        }
 
-  return (
-    <div style={{ padding: "20px", display: "flex", gap: "20px" }}>
-      <img 
-        src={item.img} 
-        alt={item.nombre} 
-        style={{ width: "300px" }} 
-      />
+        const { addItem } = useContext(CartContext);
+        const [compraFinalizada, setCompraFinalizada] = useState(false);
 
-      <div>
-        <h1>{item.nombre}</h1>
-        <p>{item.categoria}</p>
+        const onAdd = (cantidad) => {
+            addItem(item, cantidad);
+            setCompraFinalizada(true);
 
-        <h2>${item.precio}</h2>
+            Swal.fire({
+                title: "¡Excelente!",
+                text: `Sumaste ${cantidad} ${item.nombre} a tu bodega.`,
+                icon: "success",
+                timer: 2000,
+                showConfirmButton: false
+            });
+        };
+    
+        return (
+            <div className="container mt-5">
+                <div className="row">
+                    <div className="col-md-6">
+                    <img src={item.img} alt={item.nombre} className="img-fluid rounded" />
+                    </div>
+                    <div className="col-md-6">
+                        <h2>{item.nombre}</h2>
+                        <p className="lead">{item.descripcion}</p>
+                        <h3 className="text-primary">$ {item.precio}</h3>
+                        <p>Stock disponible: {item.stock}</p>
 
-        <ItemCount 
-          stock={10} 
-          initial={1} 
-          onAdd={handleOnAdd} 
-        />
-      </div>
-    </div>
-  );
-};
+                        {compraFinalizada ? (
+                            <div className="mt-3">
+                                <Link to="/cart" className="btn btn-success me-2">Ir al carrito</Link>
+                                <Link to="/" className="btn btn-outline-primary">Seguir comprando</Link>
+                            </div>
+                        ) : (
+                            <ItemCount 
+                                stock={item.stock} 
+                                initial={1} 
+                                onAdd={onAdd} 
+                            />
+                        )}                  
+                    </div>
+                </div>
+            </div>
+        );
+    };
 
-export default ItemDetail;
+    export default ItemDetail;

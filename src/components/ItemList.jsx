@@ -12,7 +12,7 @@ const ItemList = ({ productos }) => {
   to={`/item/${prod.id}`} 
   className="btn btn-danger btn-hover"
 >
-  Ver detalleF
+  Ver detalle
 </Link>
         </div>
       ))}

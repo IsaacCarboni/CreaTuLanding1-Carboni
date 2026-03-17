@@ -4,7 +4,6 @@ const products = [
   { id: "3", name: "Oferta Especial", price: 900, category: "ofertas", img: "/img/espumante.jpg", description: "Nuestro espumante premium en promoción." }
 ];
 
-// Función para obtener todos o filtrar por categoría
 export const getProducts = (category) => {
   return new Promise((resolve) => {
     setTimeout(() => {
@@ -16,7 +15,6 @@ export const getProducts = (category) => {
   });
 };
 
-// Función para obtener UN solo producto por su ID
 export const getProductById = (id) => {
   return new Promise((resolve) => {
     setTimeout(() => {

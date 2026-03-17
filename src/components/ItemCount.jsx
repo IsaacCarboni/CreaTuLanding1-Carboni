@@ -1,74 +1,48 @@
 import { useState } from "react";
 
 const ItemCount = ({ stock, initial, onAdd }) => {
-  const [count, setCount] = useState(initial);
+  const stockSeguro = Number(stock);
+  const [count, setCount] = useState(initial || 1);
 
   const increment = () => {
-    if (count < stock) {
-      setCount(count + 1);
-    }
+    if (count < stockSeguro) setCount(count + 1);
   };
 
   const decrement = () => {
-    if (count > 1) {
-      setCount(count - 1);
-    }
+    if (count > 1) setCount(count - 1);
   };
 
   return (
-    <div style={{ marginTop: "20px" }}>
-      <div style={{ display: "flex", alignItems: "center", gap: "10px", marginBottom: "10px" }}>
-        <button 
-  onClick={decrement} 
-  className="btn btn-secondary btn-hover"
->
-  -
-</button>
-        <span style={styles.count}>{count}</span>
-        <button 
-  onClick={increment} 
-  className="btn btn-secondary btn-hover"
->
-  +
-</button>
-      </div>
+    <div className="mt-4 text-center">
+      <div style={{ display: "flex", justifyContent: "center", alignItems: "center", gap: "20px" }}>
       
-      {}
-     <button 
-  onClick={() => onAdd(count)} 
-  className="btn btn-danger btn-hover w-100"
->
-  Agregar al carrito
-</button>
+        <button 
+          className="btn btn-outline-secondary" 
+          onClick={decrement} 
+          disabled={count <= 1}
+        > - </button>
+        
+        <span style={{ fontSize: "2rem", fontWeight: "bold" }}>{count}</span>
+        
+        <button 
+          className="btn btn-outline-secondary" 
+          onClick={increment} 
+          disabled={count >= stockSeguro}
+        > + </button>
+      </div>
+
+      {count >= stockSeguro && (
+        <p className="text-danger mt-2 fw-bold">¡Llegaste al límite de stock disponible!</p>
+      )}
+      
+      <button 
+        className="btn btn-primary mt-3 w-100" 
+        onClick={() => onAdd(count)}
+      >
+        Agregar al carrito ({count})
+      </button>
     </div>
   );
-};
-
-
-const styles = {
-  button: {
-    padding: "5px 15px",
-    cursor: "pointer",
-    fontSize: "1.2rem",
-    borderRadius: "5px",
-    border: "1px solid #ccc"
-  },
-  count: {
-    fontSize: "1.5rem",
-    fontWeight: "bold",
-    minWidth: "40px",
-    textAlign: "center"
-  },
-  addBtn: {
-    backgroundColor: "#4a0000",
-    color: "white",
-    padding: "10px 20px",
-    border: "none",
-    borderRadius: "5px",
-    cursor: "pointer",
-    width: "100%",
-    fontWeight: "bold"
-  }
 };
 
 export default ItemCount;
