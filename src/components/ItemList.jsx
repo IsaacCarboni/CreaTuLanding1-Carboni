@@ -1,30 +1,15 @@
-import { Link } from "react-router-dom";
+import Item from "./Item"; 
 
-const ItemList = ({ productos }) => {
-  return (
-    <div style={styles.container}>
-      {productos.map((prod) => (
-        <div key={prod.id} style={styles.card}>
-          <img src={prod.img} alt={prod.nombre} style={styles.img} />
-          <h3>{prod.nombre}</h3>
-          <p>${prod.precio}</p>
-      <Link 
-  to={`/item/${prod.id}`} 
-  className="btn btn-danger btn-hover"
->
-  Ver detalle
-</Link>
+// 1. Cambiamos "productos" por "items" (que es como lo mandás desde el Container)
+const ItemList = ({ items }) => { 
+    return (
+        <div className="row">
+            {/* 2. Agregamos el ?. antes del map para que no explote si está vacío */}
+            {items?.map((p) => (
+                <Item key={p.id} item={p} />
+            ))}
         </div>
-      ))}
-    </div>
-  );
-};
-
-const styles = {
-  container: { display: "flex", flexWrap: "wrap", gap: "20px", justifyContent: "center", padding: "20px" },
-  card: { border: "1px solid #ccc", padding: "15px", borderRadius: "8px", textAlign: "center", width: "200px" },
-  img: { width: "100%", height: "200px", objectFit: "cover" },
-  btn: { display: "block", marginTop: "10px", padding: "8px", backgroundColor: "#4a0000", color: "white", textDecoration: "none", borderRadius: "5px" }
+    );
 };
 
 export default ItemList;

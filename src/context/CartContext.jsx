@@ -12,18 +12,18 @@ export function CartProvider({ children }) {
   }, [cart]);
 
   const addItem = (item, quantity) => {
-
     const itemInCart = cart.find(prod => prod.id === item.id);
 
     if (itemInCart) {
       const updatedCart = cart.map(prod =>
         prod.id === item.id
-          ? { ...prod, cantidad: prod.cantidad + quantity }
+          ? { ...prod, quantity: prod.quantity + quantity } // Cambiado a quantity
           : prod
       );
       setCart(updatedCart);
     } else {
-      setCart([...cart, { ...item, cantidad: quantity }]);
+      // Guardamos el item con quantity
+      setCart([...cart, { ...item, quantity }]);
     }
   };
 
@@ -36,13 +36,15 @@ export function CartProvider({ children }) {
   };
 
   const totalQuantity = () => {
-    return cart.reduce((acc, prod) => acc + (prod.cantidad || 0), 0);
+    // Usamos quantity
+    return cart.reduce((acc, prod) => acc + (prod.quantity || 0), 0);
   };
 
   const totalPrice = () => {
     return cart.reduce((acc, prod) => {
-      const precio = Number(prod.precio) || 0;
-      const cantidad = Number(prod.cantidad) || 0;
+      // IMPORTANTE: Usamos Price (mayúscula) y quantity (minúscula)
+      const precio = Number(prod.Price) || 0; 
+      const cantidad = Number(prod.quantity) || 0;
       return acc + (precio * cantidad);
     }, 0);
   };
@@ -55,10 +57,10 @@ export function CartProvider({ children }) {
         removeItem,
         clearCart,
         totalQuantity, 
-        totalPrice     
+        totalPrice      
       }}
     >
       {children}
     </CartContext.Provider>
   );
-} 
+}

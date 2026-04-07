@@ -1,40 +1,24 @@
 import { useState, useEffect } from "react";
-import { db } from "../firebase/config"; 
 import { collection, getDocs } from "firebase/firestore";
+import { db } from "../firebase/config"; // Importamos la conexión
 import ItemList from "./ItemList";
 
 const ItemListContainer = () => {
-    const [productos, setProductos] = useState([]);
-    const [loading, setLoading] = useState(true); 
+    const [products, setProducts] = useState([]);
 
     useEffect(() => {
-        setLoading(true);
+        // 1. Creamos la referencia a la colección "productos"
         const productosRef = collection(db, "productos");
 
+        // 2. Pedimos los documentos a Firebase
         getDocs(productosRef)
-            .then((resp) => {
-                setProductos(
-                    resp.docs.map((doc) => ({ ...doc.data(), id: doc.id }))
-                );
-            })
-            .catch((error) => console.error("Error al cargar productos:", error))
-            .finally(() => setLoading(false)); 
+            .then((snapshot) => {
+                // Mapeamos los datos y sumamos el ID de Firebase
+                const docs = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+                setProducts(docs);
+            });
     }, []);
 
-    if (loading) {
-        return (
-            <div className="container mt-5 text-center">
-                <h3>Cargando los mejores vinos para vos...</h3>
-                <div className="spinner-border text-danger" role="status"></div>
-            </div>
-        );
-    }
-
-    return (
-        <div className="container mt-5">
-            <ItemList productos={productos} />
-        </div>
-    );
-};
-
-export default ItemListContainer;
+    return <ItemList items={products} />;
+};  
+ export default ItemListContainer

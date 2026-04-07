@@ -1,13 +1,13 @@
 import { initializeApp } from "firebase/app";
-import { getFirestore } from "firebase/firestore";
+import { getFirestore } from "firebase/firestore"; 
 
 const firebaseConfig = {
-  apiKey: "ACA_VA_TU_API_KEY",  
+  apiKey: "AIzaSyDKWTvbdzxKOpepGidSD3hEC6ku2UHiPwA",
   authDomain: "bodega-isa.firebaseapp.com",
   projectId: "bodega-isa",
-  storageBucket: "bodega-isa.appspot.com",
-  messagingSenderId: "XXXX",
-  appId: "XXXX"
+  storageBucket: "bodega-isa.firebasestorage.app",
+  messagingSenderId: "234299618298",
+  appId: "1:234299618298:web:60b979c37a962ef377aa43"
 };
 
 const app = initializeApp(firebaseConfig);

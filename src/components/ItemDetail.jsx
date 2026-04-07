@@ -1,59 +1,49 @@
-    import { useState, useContext } from 'react';
-    import { CartContext } from '../context/CartContext';
-    import ItemCount from './ItemCount';
-    import { Link } from 'react-router-dom';
-    import Swal from 'sweetalert2';
+import { useState, useContext } from "react";
+import ItemCount from "./ItemCount";
+import { CartContext } from "../context/CartContext";
+import { Link } from "react-router-dom";
 
-    const ItemDetail = ({ item }) => {
-    
-        if (!item) {
-            return <div className="text-center mt-5"><h3>Cargando los detalles de tu bodega...</h3></div>;
-        }
+const ItemDetail = ({ item }) => {
+    const [quantityAdded, setQuantityAdded] = useState(0);
+    const { addItem } = useContext(CartContext);
 
-        const { addItem } = useContext(CartContext);
-        const [compraFinalizada, setCompraFinalizada] = useState(false);
-
-        const onAdd = (cantidad) => {
-            addItem(item, cantidad);
-            setCompraFinalizada(true);
-
-            Swal.fire({
-                title: "¡Excelente!",
-                text: `Sumaste ${cantidad} ${item.nombre} a tu bodega.`,
-                icon: "success",
-                timer: 2000,
-                showConfirmButton: false
-            });
+    const handleOnAdd = (quantity) => {
+        setQuantityAdded(quantity);
+        // Usamos Name y Price (mayúsculas) para que el carrito no de $0
+        const itemToCart = {
+            id: item.id,
+            Name: item.Name,
+            Price: item.Price,
+            img: item.img
         };
-    
-        return (
-            <div className="container mt-5">
-                <div className="row">
-                    <div className="col-md-6">
-                    <img src={item.img} alt={item.nombre} className="img-fluid rounded" />
-                    </div>
-                    <div className="col-md-6">
-                        <h2>{item.nombre}</h2>
-                        <p className="lead">{item.descripcion}</p>
-                        <h3 className="text-primary">$ {item.precio}</h3>
-                        <p>Stock disponible: {item.stock}</p>
-
-                        {compraFinalizada ? (
-                            <div className="mt-3">
-                                <Link to="/cart" className="btn btn-success me-2">Ir al carrito</Link>
-                                <Link to="/" className="btn btn-outline-primary">Seguir comprando</Link>
-                            </div>
-                        ) : (
-                            <ItemCount 
-                                stock={item.stock} 
-                                initial={1} 
-                                onAdd={onAdd} 
-                            />
-                        )}                  
-                    </div>
-                </div>
-            </div>
-        );
+        addItem(itemToCart, quantity);
     };
 
-    export default ItemDetail;
+    return (
+        <div className="container mt-5">
+            <div className="row">
+                <div className="col-md-6 text-center">
+                    <img src={item.img} alt={item.Name} className="img-fluid rounded shadow" style={{maxHeight: "500px"}} />
+                </div>
+                <div className="col-md-6 d-flex flex-column justify-content-center">
+                    {/* CORRECCIÓN: Usamos Name y Price con mayúscula inicial */}
+                    <h1 className="fw-bold">{item.Name}</h1>
+                    <p className="text-muted h4 mb-3">{item.categoria}</p>
+                    <h2 className="text-danger mb-4">${item.Price}</h2>
+                    
+                    <p className="mb-4">Stock disponible: {item.Stock}</p>
+
+                    {
+                        quantityAdded > 0 ? (
+                            <Link to="/cart" className="btn btn-dark w-100">Terminar compra</Link>
+                        ) : (
+                         <ItemCount initial={1} stock={item.Stock || 0} onAdd={handleOnAdd} />
+                        )
+                    }
+                </div>
+            </div>
+        </div>
+    );
+};
+
+export default ItemDetail;
